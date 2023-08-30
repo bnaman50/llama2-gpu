@@ -16,10 +16,10 @@ from utils import full_path
 
 
 def get_llama_model_and_tokenizer(
-    model_pt: Path,
-    hf_token: str,
-    device: str = "cuda",
-    model_cls: Union[AutoModel, AutoModelForCausalLM] = AutoModel,
+        model_pt: Path,
+        hf_token: str,
+        device: str = "cuda",
+        model_cls: Union[AutoModel, AutoModelForCausalLM] = AutoModel,
 ) -> Tuple[PreTrainedModel, PreTrainedTokenizer]:
     start = time.time()
     tokenizer = AutoTokenizer.from_pretrained(model_pt, token=hf_token)
@@ -47,11 +47,12 @@ def mean_pooling(token_embeddings, attention_mask):
 
 
 def llama2(
-    sent: Union[str, List[str]],
-    model: PreTrainedModel,
-    tokenizer: PreTrainedTokenizer,
-    device: str = "cuda",
-    auto_model: bool = True,
+        sent: Union[str, List[str]],
+        model: PreTrainedModel,
+        tokenizer: PreTrainedTokenizer,
+        device: str = "cuda",
+        auto_model: bool = True,
+        max_length: int = 1024
 ) -> torch.Tensor:
     start = time.time()
     device = torch.device(device)
@@ -61,12 +62,12 @@ def llama2(
             return_tensors="pt",
             padding=True,
             truncation=True,
-            max_length=1024,  # change it as per the use case
+            max_length=max_length,
         ).to(device)
         if auto_model:
             sentence_embedding = model(**sentence_encode)
             sentence_embedding = sentence_embedding.last_hidden_state.detach().cpu()
-        else:
+        else:  # CausalLM
             sentence_embedding = model(**sentence_encode, output_hidden_states=True)
             sentence_embedding = sentence_embedding.hidden_states[-1].detach().cpu()
     sentence_embedding = mean_pooling(
@@ -79,10 +80,10 @@ def llama2(
 
 
 def main():
-    hf_token = "#######" # Provide your HF Token here
+    hf_token = "#######"  # Provide your HF Token here
     sent = [
         "I go to school",
-        "Unequal length sentences, that's why I have a ling sentence here",
+        "Unequal length sentences, that's why I have a long sentence here",
     ]
     batch = 10
     sent_batch = sent * batch

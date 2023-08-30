@@ -4,7 +4,7 @@ from typing import Union
 
 from transformers import AutoTokenizer, AutoModel
 
-from constants import get_hf_token
+# from constants import get_hf_token
 from utils import mkdir_p
 
 
@@ -33,7 +33,7 @@ def shard_llama_model_and_tokenizer(
 
 
 def main():
-    token = get_hf_token(personal=True)
+    token = "#######"  # Provide your HF Token here
     shard_size = "1GB"
     parent_save_dir = mkdir_p("/data/naman/sharded_llama2/")
     shard_llama_model_and_tokenizer(parent_save_dir, token, shard_size)
