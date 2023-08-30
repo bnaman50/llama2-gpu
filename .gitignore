@@ -1,0 +1,4 @@
+Backup/
+constants.py
+*pycache*/
+.python-version
