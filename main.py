@@ -11,7 +11,7 @@ from transformers import (
     PreTrainedTokenizer,
 )
 
-from constants import get_hf_token
+# from constants import get_hf_token
 from utils import full_path
 
 
@@ -79,7 +79,7 @@ def llama2(
 
 
 def main():
-    hf_token = get_hf_token(personal=True)  # Provide your HF Token here
+    hf_token = "#######" # Provide your HF Token here
     sent = [
         "I go to school",
         "Unequal length sentences, that's why I have a ling sentence here",
