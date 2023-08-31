@@ -11,18 +11,16 @@ from transformers import (
     PreTrainedTokenizer,
 )
 
-# from constants import get_hf_token
 from utils import full_path
 
 
 def get_llama_model_and_tokenizer(
         model_pt: Path,
-        hf_token: str,
         device: str = "cuda",
         model_cls: Union[AutoModel, AutoModelForCausalLM] = AutoModel,
 ) -> Tuple[PreTrainedModel, PreTrainedTokenizer]:
     start = time.time()
-    tokenizer = AutoTokenizer.from_pretrained(model_pt, token=hf_token)
+    tokenizer = AutoTokenizer.from_pretrained(model_pt)
     # This is required because LLAMA2 does not have PAD token
     # https://colab.research.google.com/drive/1PEQyJO1-f6j0S_XJ8DV50NkpzasXkrzd?usp=sharing#scrollTo=OJXpOgBFuSrc
     tokenizer.pad_token = tokenizer.eos_token
@@ -80,7 +78,6 @@ def llama2(
 
 
 def main():
-    hf_token = "#######"  # Provide your HF Token here
     sent = [
         "I go to school",
         "Unequal length sentences, that's why I have a long sentence here",
@@ -90,8 +87,8 @@ def main():
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
 
-    model_dir = full_path(f"/data/naman/sharded_llama2/llama2_shard_size_1GB")
-    model, tokenizer = get_llama_model_and_tokenizer(model_dir, hf_token, device=device)
+    model_dir = full_path("PATH TO SHARDED MODEL DIR")  # Provide the path to sharded model here
+    model, tokenizer = get_llama_model_and_tokenizer(model_dir, device=device)
 
     for _ in range(10):
         sentence_embeddings = llama2(sent_batch, model, tokenizer, device=device)
