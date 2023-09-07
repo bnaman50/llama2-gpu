@@ -35,7 +35,7 @@ def shard_llama_model_and_tokenizer(
 def main():
     token = "#######"  # Provide your HF Token here
     shard_size = "1GB"
-    parent_save_dir = mkdir_p("/data/naman/sharded_llama2/")
+    parent_save_dir = mkdir_p("PATH TO SHARDED MODEL DIR")  # Provide the parent dir where sharded model will be saved
     shard_llama_model_and_tokenizer(parent_save_dir, token, shard_size)
 
 
