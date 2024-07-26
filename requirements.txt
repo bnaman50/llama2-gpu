@@ -1,4 +1,4 @@
 accelerate==0.21.0
 sentencepiece==0.1.99
-torch==2.2.0
+torch>=2.2.0
 transformers==4.32.0
